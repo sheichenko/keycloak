@@ -35,6 +35,7 @@ public class JWSBuilder {
     String type;
     String kid;
     String contentType;
+    String x5t;
     byte[] contentBytes;
 
     public JWSBuilder type(String type) {
@@ -49,6 +50,12 @@ public class JWSBuilder {
 
     public JWSBuilder contentType(String type) {
         this.contentType = type;
+        return this;
+    }
+
+    public JWSBuilder x5t(String x5t)
+    {
+        this.x5t = x5t;
         return this;
     }
 
@@ -73,6 +80,7 @@ public class JWSBuilder {
 
         if (type != null) builder.append(",\"typ\" : \"").append(type).append("\"");
         if (kid != null) builder.append(",\"kid\" : \"").append(kid).append("\"");
+        if (x5t != null) builder.append(",\"x5t\" : \"").append(x5t).append("\"");
         if (contentType != null) builder.append(",\"cty\":\"").append(contentType).append("\"");
         builder.append("}");
         try {
