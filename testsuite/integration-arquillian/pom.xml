@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.keycloak</groupId>
         <artifactId>keycloak-testsuite-pom</artifactId>
-        <version>4.3.0.Final-SNAPSHOT</version>
+        <version>4.4.0.Final</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     
@@ -40,6 +40,12 @@
         <auth.server.java.home>${java.home}</auth.server.java.home>
         <app.server.java.home>${java.home}</app.server.java.home>
         <app.server>undertow</app.server>
+
+        <!-- Wildfly deprecated versions -->
+        <wildfly.deprecated.version>11.0.0.Final</wildfly.deprecated.version>
+        <wildfly.deprecated.wildfly.core.version>3.0.8.Final</wildfly.deprecated.wildfly.core.version>
+        <wildfly.deprecated.infinispan.version>8.2.8.Final</wildfly.deprecated.infinispan.version>
+        <wildfly.deprecated.arquillian.wildfly.container>2.1.0.Final</wildfly.deprecated.arquillian.wildfly.container>
 
         <!--component versions-->
         <!--

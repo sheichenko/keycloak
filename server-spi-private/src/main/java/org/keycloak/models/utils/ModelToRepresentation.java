@@ -44,6 +44,7 @@ import java.util.stream.Collectors;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
@@ -163,6 +164,21 @@ public class ModelToRepresentation {
             attrs.putAll(user.getAttributes());
             rep.setAttributes(attrs);
         }
+        return rep;
+    }
+
+    public static UserRepresentation toBriefRepresentation(UserModel user) {
+        UserRepresentation rep = new UserRepresentation();
+        rep.setId(user.getId());
+        rep.setUsername(user.getUsername());
+        rep.setCreatedTimestamp(user.getCreatedTimestamp());
+        rep.setLastName(user.getLastName());
+        rep.setFirstName(user.getFirstName());
+        rep.setEmail(user.getEmail());
+        rep.setEnabled(user.isEnabled());
+        rep.setEmailVerified(user.isEmailVerified());
+        rep.setFederationLink(user.getFederationLink());
+
         return rep;
     }
 
@@ -395,28 +411,10 @@ public class ModelToRepresentation {
 
     public static void exportRequiredActions(RealmModel realm, RealmRepresentation rep) {
 
-        rep.setRequiredActions(new LinkedList<RequiredActionProviderRepresentation>());
+        rep.setRequiredActions(new LinkedList<>());
 
-        List<RequiredActionProviderModel> requiredActionProviders = realm.getRequiredActionProviders();
-        List<RequiredActionProviderModel> copy = new LinkedList<>();
-        copy.addAll(requiredActionProviders);
-        requiredActionProviders = copy;
-        //ensure consistent ordering of requiredActionProviders.
-        Collections.sort(requiredActionProviders, new Comparator<RequiredActionProviderModel>() {
-            @Override
-            public int compare(RequiredActionProviderModel left, RequiredActionProviderModel right) {
-                String l = left.getAlias() != null ? left.getAlias() : "\0";
-                String r = right.getAlias() != null ? right.getAlias() : "\0";
-                return l.compareTo(r);
-            }
-        });
-
-        for (RequiredActionProviderModel model : requiredActionProviders) {
-            RequiredActionProviderRepresentation action = toRepresentation(model);
-            rep.getRequiredActions().add(action);
-        }
+        realm.getRequiredActionProviders().forEach(action -> rep.getRequiredActions().add(toRepresentation(action)));
     }
-
 
     public static RealmEventsConfigRepresentation toEventsConfigReprensetation(RealmModel realm) {
         RealmEventsConfigRepresentation rep = new RealmEventsConfigRepresentation();
@@ -679,6 +677,7 @@ public class ModelToRepresentation {
         rep.setConfig(model.getConfig());
         rep.setName(model.getName());
         rep.setProviderId(model.getProviderId());
+        rep.setPriority(model.getPriority());
         return rep;
     }
 

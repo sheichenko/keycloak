@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.keycloak.testsuite</groupId>
         <artifactId>integration-arquillian</artifactId>
-        <version>4.3.0.Final-SNAPSHOT</version>
+        <version>4.4.0.Final</version>
     </parent>
 
     <packaging>pom</packaging>
@@ -240,7 +240,6 @@
                                 <goal>copy</goal>
                             </goals>
                             <configuration>
-                                <skip>${app.server.skip.unpack}</skip>
                                 <artifactItems>
                                     <artifactItem>
                                         <groupId>org.keycloak.testsuite</groupId>
@@ -296,7 +295,6 @@
                                 <goal>unpack</goal>
                             </goals>
                             <configuration>
-                                <skip>${app.server.skip.unpack}</skip>
                                 <artifactItems>
                                     <artifactItem>
                                         <groupId>org.keycloak.testsuite</groupId>
