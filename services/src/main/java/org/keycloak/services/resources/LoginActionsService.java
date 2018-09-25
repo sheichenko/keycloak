@@ -40,6 +40,8 @@ import org.keycloak.broker.provider.BrokeredIdentityContext;
 import org.keycloak.common.ClientConnection;
 import org.keycloak.common.VerificationException;
 import org.keycloak.common.util.Time;
+import org.keycloak.crypto.SignatureProvider;
+import org.keycloak.crypto.SignatureVerifierContext;
 import org.keycloak.events.Details;
 import org.keycloak.events.Errors;
 import org.keycloak.events.EventBuilder;
@@ -477,16 +479,21 @@ public class LoginActionsService {
                 throw new ExplainedTokenVerificationException(aToken, Errors.SSL_REQUIRED, Messages.HTTPS_REQUIRED);
             }
 
-            tokenVerifier
-              .withChecks(
-                // Token introspection checks
-                TokenVerifier.IS_ACTIVE,
-                new TokenVerifier.RealmUrlCheck(Urls.realmIssuer(session.getContext().getUri().getBaseUri(), realm.getName())),
-                ACTION_TOKEN_BASIC_CHECKS
-              )
+            TokenVerifier<DefaultActionTokenKey> verifier = tokenVerifier
+                    .withChecks(
+                            // Token introspection checks
+                            TokenVerifier.IS_ACTIVE,
+                            new TokenVerifier.RealmUrlCheck(Urls.realmIssuer(session.getContext().getUri().getBaseUri(), realm.getName())),
+                            ACTION_TOKEN_BASIC_CHECKS
+                    );
 
-              .secretKey(session.keys().getActiveHmacKey(realm).getSecretKey())
-              .verify();
+            String kid = verifier.getHeader().getKeyId();
+            String algorithm = verifier.getHeader().getAlgorithm().name();
+
+            SignatureVerifierContext signatureVerifier = session.getProvider(SignatureProvider.class, algorithm).verifier(kid);
+            verifier.verifierContext(signatureVerifier);
+
+            verifier.verify();
 
             token = TokenVerifier.create(tokenString, handler.getTokenClass()).getToken();
         } catch (TokenNotActiveException ex) {
@@ -834,16 +841,24 @@ public class LoginActionsService {
             session.users().addConsent(realm, user.getId(), grantedConsent);
         }
 
+        // Update may not be required if all clientScopes were already granted (May happen for example with prompt=consent)
+        boolean updateConsentRequired = false;
+
         for (String clientScopeId : authSession.getClientScopes()) {
             ClientScopeModel clientScope = KeycloakModelUtils.findClientScopeById(realm, clientScopeId);
             if (clientScope != null) {
-                grantedConsent.addGrantedClientScope(clientScope);
+                if (!grantedConsent.isClientScopeGranted(clientScope)) {
+                    grantedConsent.addGrantedClientScope(clientScope);
+                    updateConsentRequired = true;
+                }
             } else {
-                logger.warn("Client scope with ID '%s' not found");
+                logger.warnf("Client scope with ID '%s' not found", clientScopeId);
             }
         }
 
-        session.users().updateConsent(realm, user.getId(), grantedConsent);
+        if (updateConsentRequired) {
+            session.users().updateConsent(realm, user.getId(), grantedConsent);
+        }
 
         event.detail(Details.CONSENT, Details.CONSENT_VALUE_CONSENT_GRANTED);
         event.success();

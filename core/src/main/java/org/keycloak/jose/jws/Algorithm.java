@@ -30,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
+@Deprecated
 public enum Algorithm {
 
     none(null, null),
