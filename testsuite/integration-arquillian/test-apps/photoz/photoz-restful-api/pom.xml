@@ -6,7 +6,11 @@
     <parent>
         <groupId>org.keycloak.testsuite</groupId>
         <artifactId>integration-arquillian-test-apps-photoz-parent</artifactId>
+<<<<<<< HEAD
         <version>4.4.0.Final</version>
+=======
+        <version>4.5.0.Final</version>
+>>>>>>> upstream/REL
         <relativePath>../pom.xml</relativePath>
     </parent>
 

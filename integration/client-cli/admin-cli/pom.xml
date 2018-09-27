@@ -21,7 +21,11 @@
     <parent>
         <artifactId>keycloak-client-cli-parent</artifactId>
         <groupId>org.keycloak</groupId>
+<<<<<<< HEAD
         <version>4.4.0.Final</version>
+=======
+        <version>4.5.0.Final</version>
+>>>>>>> upstream/REL
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -88,6 +92,8 @@
                                         -->
                                         <include>org/keycloak/representations/idm/**</include>
                                         <include>org/keycloak/representations/JsonWebToken.class</include>
+                                        <include>org/keycloak/Token.class</include>
+                                        <include>org/keycloak/TokenCategory.class</include>
                                     </includes>
                                 </filter>
                                 <filter>

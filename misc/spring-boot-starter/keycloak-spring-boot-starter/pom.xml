@@ -4,7 +4,11 @@
     <parent>
         <groupId>org.keycloak</groupId>
         <artifactId>keycloak-spring-boot-starter-parent</artifactId>
+<<<<<<< HEAD
         <version>4.4.0.Final</version>
+=======
+        <version>4.5.0.Final</version>
+>>>>>>> upstream/REL
     </parent>
     <artifactId>keycloak-spring-boot-starter</artifactId>
     <name>Keycloak :: Spring :: Boot :: Default ::  Starter</name>

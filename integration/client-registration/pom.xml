@@ -21,7 +21,11 @@
     <parent>
         <artifactId>keycloak-integration-parent</artifactId>
         <groupId>org.keycloak</groupId>
+<<<<<<< HEAD
         <version>4.4.0.Final</version>
+=======
+        <version>4.5.0.Final</version>
+>>>>>>> upstream/REL
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

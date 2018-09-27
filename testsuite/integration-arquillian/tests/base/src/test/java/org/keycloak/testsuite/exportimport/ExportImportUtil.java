@@ -315,7 +315,7 @@ public class ExportImportUtil {
         Assert.assertNull(findMapperByName(applicationMappers, OIDCLoginProtocol.LOGIN_PROTOCOL, "given name"));
         Assert.assertNull(findMapperByName(applicationMappers, OIDCLoginProtocol.LOGIN_PROTOCOL, KerberosConstants.GSS_DELEGATION_CREDENTIAL_DISPLAY_NAME));
 
-        Assert.assertEquals(1, otherApp.getProtocolMappers().size());
+        Assert.assertEquals(4, otherApp.getProtocolMappers().size());
         List<ProtocolMapperRepresentation> otherAppMappers = otherApp.getProtocolMappers();
         Assert.assertNull(findMapperByName(otherAppMappers, OIDCLoginProtocol.LOGIN_PROTOCOL, "username"));
         ProtocolMapperRepresentation gssCredentialMapper = findMapperByName(otherAppMappers, OIDCLoginProtocol.LOGIN_PROTOCOL, KerberosConstants.GSS_DELEGATION_CREDENTIAL_DISPLAY_NAME);
@@ -384,9 +384,7 @@ public class ExportImportUtil {
         Assert.assertNotNull(linked);
         Assert.assertEquals("my-service-user", linked.getUsername());
         
-        if (Profile.isFeatureEnabled(Profile.Feature.AUTHORIZATION)) {
-            assertAuthorizationSettings(realmRsc);
-        }
+        assertAuthorizationSettings(realmRsc);
     }
 
 

@@ -21,7 +21,11 @@
     <parent>
         <artifactId>keycloak-testsuite-pom</artifactId>
         <groupId>org.keycloak</groupId>
+<<<<<<< HEAD
         <version>4.4.0.Final</version>
+=======
+        <version>4.5.0.Final</version>
+>>>>>>> upstream/REL
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -171,11 +175,6 @@
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-jaxrs-oauth-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>user-storage-properties-example</artifactId>
-        </dependency>
-
         <!-- Dependency on services from integration-arquillian -->
         <dependency>
             <groupId>org.keycloak.testsuite</groupId>
